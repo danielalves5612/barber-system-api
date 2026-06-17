@@ -1,11 +1,14 @@
 import { Sequelize } from "sequelize";
 import configDatabase from "../config/database.js";
+import User from "../models/UserModel.js";
 
-const connection = new Sequelize(configDatabase)
+const sequelize = new Sequelize(configDatabase)
+
+User.init(sequelize)
 
 async function teste(){
     try{
-        await connection.authenticate()
+        await sequelize.authenticate()
         console.log('Banco connectado com Sucesso')
     }catch(e){
         console.error(e)
@@ -14,4 +17,4 @@ async function teste(){
 
 teste()
 
-export default connection
+export default sequelize
