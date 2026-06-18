@@ -1,10 +1,12 @@
-import express from 'express';
+import express, { urlencoded, json } from 'express';
 import './database/index.js';
+import router from "./routes/UserRoute.js"
+
 
 const app = express()
 
-app.get('/', (req, res) => {
-    res.send('Olá')
-})
+app.use(urlencoded( { extended: true}))
+app.use(json())
+app.use(router)
 
 export default app;

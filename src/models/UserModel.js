@@ -18,13 +18,16 @@ class User extends Model{
             },
             email: {
                 type: Sequelize.STRING,
+                unique: {
+                    msg: "Este e-mail já está cadastrado"
+                },
                 validate: {
                     isEmail: {
                         msg: "Por favor, digite um e-mail válido"
                     },
                     notEmpty: {
                         msg: "O campo e-mail precisa ser preenchido"
-                    }
+                    },
                 }
             },
             telefone: {
@@ -58,7 +61,9 @@ class User extends Model{
             }
         },
         {
-            sequelize
+            sequelize,
+            tableName: 'users'
+
         })
 
         this.addHook("beforeSave", (user) => {
