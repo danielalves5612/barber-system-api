@@ -36,7 +36,103 @@ async function index(req, res){
     }
 }
 
+async function show(req,res){
+    try{
+        if(!req.params.id){
+            return res.status(400).json({
+                error: "Por favor, digite um ID válido"
+            })
+        }
+
+        const user = await User.findByPk(req.params.id, 
+            { attributes: ["id", "nome", "email", "telefone", "role"]})
+
+         if(!user){
+            return res.status(404).json({
+                errors: "Usuário não encontrado, tente novamente"
+            })
+         }   
+
+        return res.status(200).json(user)
+    }catch(e){
+        console.log(e)
+        return res.status(404).json({
+            error: "Falha ao encontrar usuário, tente novamente."
+        })
+    }
+}
+
+async function update(req, res){
+    try{
+
+        if(!req.body){
+            return res.status(400).json({
+                error: "Por favor, informe os campos necessários"
+            })
+        }
+
+        if(!req.params.id){
+            return res.status(400).json({
+                error: "Por favor, digite um ID válido"
+            })
+        }
+
+        const user = await User.findByPk(req.params.id, 
+            { attributes: ["id", "nome", "email", "telefone", "role"]})
+
+        if(!user){
+            return res.status(404).json({
+                error: "Falha ao encontrar usuário, tente novamente."
+            })
+        }
+
+        const novoUser = await user.update(req.body)
+
+        const { id, nome, email, telefone, role } = novoUser
+
+        return res.status(200).json({ id, nome, email, telefone, role })
+    }catch(e){
+        return res.status(500).json({
+            error: "Falha ao atualizar o usuário, tente novamente."
+        })
+    }
+}
+
+async function destroy(req, res){
+    try{
+        if(!req.params.id){
+            return res.status(400).json({
+                error: "Por favor, digite um ID válido"
+            })
+        }
+
+        const id = req.params.id
+
+        const user = await User.findByPk(id)
+
+        if(!user){
+            return res.status(404).json({
+                error: "Nenhum usuário encontrado"
+            })
+        }
+
+        const { nome } = user
+
+        await user.destroy()
+
+        return res.status(200).json(`O usuário ${nome}, foi deletado com sucesso!`)
+    }catch(e){
+        console.log(e)
+        res.status(500).json({
+            error: "Não foi possível deletar o usuário"
+        })
+    }
+}
+
 export default {
     store,
-    index
+    index,
+    show,
+    update,
+    destroy
 }
