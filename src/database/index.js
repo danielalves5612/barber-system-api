@@ -1,10 +1,12 @@
 import { Sequelize } from "sequelize";
 import configDatabase from "../config/database.js";
 import User from "../models/UserModel.js";
+import Service from "../models/ServiceModel.js";
 
 const sequelize = new Sequelize(configDatabase)
 
 User.init(sequelize)
+Service.init(sequelize)
 
 async function teste(){
     try{
