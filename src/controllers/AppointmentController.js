@@ -9,7 +9,44 @@ async function store(req, res){
             })
         }
 
-        const { cliente_id, barbeiro_id, data, hora } = req.body
+        const { cliente_id, barbeiro_id, hora, data } = req.body
+
+        const [ horaAgendada, minutoAgendado ] = hora.split(':')
+
+        const horaNumero = Number(horaAgendada)
+        const minutoNumero = Number(minutoAgendado)
+
+        if(horaNumero < 9 || horaNumero >= 19){
+            return res.status(400).json({
+                error: "Não é possível agendar horários, fora do expediente"
+            })
+        }
+
+        const minutosPermitidos = [0 ,30]
+
+        if(!minutosPermitidos.includes(minutoNumero)){
+            return res.status(400).json({
+                error: 'Por favor, informe um horário válido'
+            })
+        }
+
+        const [ano, mes, dia] = data.split('-')
+
+        const dataAgendamento = new Date(
+            Number(ano),
+            Number(mes) -1,
+            Number(dia)
+        )
+
+        const dataAtual = new Date()
+
+        dataAtual.setHours(0, 0, 0, 0)
+
+        if(dataAgendamento < dataAtual){
+            return res.status(400).json({
+                error: 'Não é possível realizar agendamentos em datas passadas'
+            })
+        }
 
         const cliente = await User.findByPk(cliente_id)
 
@@ -17,6 +54,22 @@ async function store(req, res){
             return res.status(400).json({
                 error: "Nenhum cliente encontrado com esse ID"
             })
+        }
+
+        const usuarioLogado = await User.findByPk(req.userId)
+
+        if(!usuarioLogado){
+            return res.status(400).json({
+                error: 'Nenhum usuário logado com esse ID'
+            })
+        }
+
+        if(usuarioLogado.role !== 'admin'){
+            if(cliente.id !== usuarioLogado.id){
+                return res.status(403).json({
+                    error: 'Usuário não possui permissão necessária'
+                })
+            }
         }
 
         if(cliente.role !== "cliente"){
@@ -60,8 +113,9 @@ async function store(req, res){
         return res.status(201).json({id, data: appointmentData, hora: appointmentHora, status, cliente_id: appointmentClienteId, barbeiro_id: appointmentBarbeiroId})
 
     }catch(e){
+        console.log(e)
         return res.status(400).json({
-            errors: e.errors.map((err) => err.message)
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
@@ -150,6 +204,19 @@ async function update(req, res){
             })
         }
 
+        const statusPermitidos = [
+            'agendado',
+            'confirmado',
+            'cancelado',
+            'concluido'
+        ]
+
+        if(!statusPermitidos.includes(req.body.status)){
+            return res.status(400).json({
+                error: 'Por favor, digite um status válido'
+            })
+        }
+
         const appointment = await Appointment.findByPk(idBusca)
 
         if(!appointment){
@@ -158,11 +225,17 @@ async function update(req, res){
             })
         }
 
+        if(appointment.status === 'concluido'){
+            return res.status(400).json({
+                error: 'Não é possível alterar um agendamento já concluido'
+            })
+        }
+
         const appointmentUpdate = await appointment.update(req.body)
 
         const { id, data, hora, status, cliente_id: appointmentClienteId, barbeiro_id: appointmentBarbeiroId} = appointmentUpdate
 
-        return res.status(200).json({ id, data, hora, status, cliente_id, barbeiro_id})
+        return res.status(200).json({ id, data, hora, status, cliente_id: appointmentClienteId, barbeiro_id: appointmentBarbeiroId})
     }catch(e){
         return res.status(400).json({
             error: "Erro ao atualizar o agendamento, tente novamente"
