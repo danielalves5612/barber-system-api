@@ -38,6 +38,6 @@ export default {
         cb(new Error('Arquivo inválido'), false)
     } ,
     limits: {
-        fileSize: 10 * 1024 * 1024
+        fileSize: 2 * 1024 * 1024
     },
 }

@@ -7,6 +7,7 @@ import AppointmentRoute from "./routes/AppointmentRoute.js"
 import PhotoRoute from "./routes/PhotoRoute.js"
 import path, { resolve } from 'path'
 import { fileURLToPath } from 'url'
+import ErrorHandler from './middlewares/ErrorHandler.js';
 
 
 const app = express()
@@ -23,6 +24,7 @@ app.use(TokenRoute)
 app.use(ServiceRoute)
 app.use(AppointmentRoute)
 app.use(PhotoRoute)
+app.use(ErrorHandler)
 
 
 export default app;
