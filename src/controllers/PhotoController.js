@@ -1,5 +1,12 @@
+import path, { resolve } from "path";
 import Photo from "../models/PhotoModel.js";
 import Service from "../models/ServiceModel.js"
+import { unlink } from 'fs/promises'
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url)
+
+const __dirname = path.dirname(__filename)
 
 async function store(req, res) {
     try{
@@ -153,7 +160,15 @@ async function destroy(req, res) {
             })
         }
 
-        const {id} = photo
+        const {id, filename} = photo
+
+        const caminhoArquivo = resolve(__dirname, '..', 'uploads', 'images', filename)
+
+        try{
+            await unlink(caminhoArquivo)
+        }catch(e){
+            console.log('Arquivo já não existe')
+        }
 
         await photo.destroy()
 
