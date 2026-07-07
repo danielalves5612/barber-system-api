@@ -12,6 +12,16 @@ Service.init(sequelize)
 Appointment.init(sequelize)
 Photo.init(sequelize)
 
+const models = {
+    User,
+    Service,
+    Appointment,
+    Photo
+}
+
+Service.associate(models)
+Photo.associate(models)
+
 async function teste(){
     try{
         await sequelize.authenticate()

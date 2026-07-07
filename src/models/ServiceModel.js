@@ -13,10 +13,10 @@ class Service extends Model{
                         args: [5, 50],
                         msg: "O campo nome precisa ter entre 5 e 50 caracteres"
                     },
+                    unique: {
+                        msg: "Serviço já cadastrado"
+                    }
                 },
-                unique: {
-                    msg: "Serviço já cadastrado"
-                }
             },
             descricao: {
                 type: Sequelize.STRING,
@@ -61,6 +61,15 @@ class Service extends Model{
         )
 
         return this
+    }
+
+    static associate(models){
+        this.hasMany(models.Photo, {
+            foreignKey: 'service_id',
+            as: 'photos',
+            onDelete: 'CASCADE',
+            hooks: true
+        })
     }
 
 }

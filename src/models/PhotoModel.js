@@ -42,6 +42,13 @@ class Photo extends Model{
 
         return this
     }
+
+    static associate(models){
+        this.belongsTo(models.Service, {
+            foreignKey: 'service_id',
+            as: 'service'
+        })
+    }
 }
 
 export default Photo
