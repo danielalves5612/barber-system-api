@@ -7,6 +7,7 @@ export default {
      await queryInterface.bulkInsert('users', [{
        nome: 'Daniel Alves de Souza',
        email: 'danieladmin@gmail.com',
+       telefone: '(11) 994578965',
        password_hash: bcrypt.hashSync('12345678', 8),
        role: 'admin',
        created_at: new Date(),
