@@ -21,7 +21,7 @@ async function store(req, res){
         return res.status(201).json({id, nome, descricao, preco, duracao, ativo})
     }catch(e){
         return res.status(400).json({
-            errors: e.errors.map((err) => err.message)
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
@@ -31,7 +31,7 @@ async function index(req, res){
         const service = await Service.findAll({ attributes: ["id", "nome", "descricao", "preco", "duracao", "ativo"],
             include: [{
                 association: 'photos',
-                attributes: ['id', 'url']
+                attributes: ['id', 'filename', 'url']
             }]
         })
 
@@ -56,7 +56,7 @@ async function show(req, res){
         const service = await Service.findByPk(id, {attributes: ["id", "nome", "descricao", "preco", "duracao", "ativo"],
             include: [{
                 association: 'photos',
-                attributes: ['id', 'url']
+                attributes: ['id', 'filename', 'url']
             }]
         })
 

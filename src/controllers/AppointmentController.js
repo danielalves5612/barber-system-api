@@ -113,7 +113,6 @@ async function store(req, res){
         return res.status(201).json({id, data: appointmentData, hora: appointmentHora, status, cliente_id: appointmentClienteId, barbeiro_id: appointmentBarbeiroId})
 
     }catch(e){
-        console.log(e)
         return res.status(400).json({
             errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
@@ -150,6 +149,22 @@ async function show(req, res){
             })
         }
 
+        const usuarioLogado = await User.findByPk(req.userId)
+
+        if(!usuarioLogado){
+            return res.status(400).json({
+                error: 'Nenhum usuário localizado'
+            })
+        }
+
+        if(usuarioLogado.role !== 'admin' && usuarioLogado.role !== 'barbeiro'){
+            if(appointment.cliente_id !== usuarioLogado.id){
+                return res.status(403).json({
+                    error: 'Você pode acessar, apenas o seu próprio agendamento'
+                })
+            }
+        }
+
         return res.status(200).json(appointment)
     }catch(e){
         return res.status(400).json({
@@ -176,32 +191,36 @@ async function update(req, res){
 
         const { cliente_id, barbeiro_id } = req.body
 
-        const cliente = await User.findByPk(cliente_id)
+        if(cliente_id){
+            const cliente = await User.findByPk(cliente_id)
 
-        if(!cliente){
-            return res.status(400).json({
-                error: "Nenhum cliente encontrado com esse ID"
-            })
+            if(!cliente){
+                return res.status(400).json({
+                    error: "Nenhum cliente encontrado com esse ID"
+                })
+            }
+
+            if(cliente.role !== "cliente"){
+                return res.status(400).json({
+                    error: "Para gerar um agendamento, o usuário precisa ser um cliente"
+                })
+            }
         }
 
-        if(cliente.role !== "cliente"){
-            return res.status(400).json({
-                error: "Para gerar um agendamento, o usuário precisa ser um cliente"
-            })
-        }
+        if(barbeiro_id){
+            const barbeiro = await User.findByPk(barbeiro_id)
 
-        const barbeiro = await User.findByPk(barbeiro_id)
+            if(!barbeiro){
+                return res.status(400).json({
+                    error: "Nenhum barbeiro encontrado com esse ID"
+                })
+            }
 
-        if(!barbeiro){
-            return res.status(400).json({
-                error: "Nenhum barbeiro encontrado com esse ID"
-            })
-        }
-
-        if(barbeiro.role !== "barbeiro"){
-            return res.status(400).json({
-                error: "Para gerar um agendamento, informe um barbeiro disponível"
-            })
+            if(barbeiro.role !== "barbeiro"){
+                return res.status(400).json({
+                    error: "Para gerar um agendamento, informe um barbeiro disponível"
+                })
+            }
         }
 
         const statusPermitidos = [
@@ -211,7 +230,8 @@ async function update(req, res){
             'concluido'
         ]
 
-        if(!statusPermitidos.includes(req.body.status)){
+
+        if(req.body.status && !statusPermitidos.includes(req.body.status)){
             return res.status(400).json({
                 error: 'Por favor, digite um status válido'
             })
@@ -229,6 +249,22 @@ async function update(req, res){
             return res.status(400).json({
                 error: 'Não é possível alterar um agendamento já concluido'
             })
+        }
+
+        const usuarioLogado = await User.findByPk(req.userId)
+
+        if(!usuarioLogado){
+            return res.status(400).json({
+                error: 'Nenhum usuário localizado'
+            })
+        }
+
+        if(usuarioLogado.role !== 'admin' && usuarioLogado.role !== 'barbeiro'){
+            if(appointment.cliente_id !== usuarioLogado.id){
+                return res.status(403).json({
+                    error: 'Você não possui permissão para alterar este agendamento'
+                })
+            }
         }
 
         const appointmentUpdate = await appointment.update(req.body)

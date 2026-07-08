@@ -15,10 +15,8 @@ async function store (req, res) {
 
         return res.status(201).json({id, nome, email, telefone, role})
     }catch(e){
-        console.log(e)
         return res.status(400).json({
-            errors: e.errors.map((err) => 
-            err.message)
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }

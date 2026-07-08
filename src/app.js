@@ -16,9 +16,9 @@ const __filename = fileURLToPath(import.meta.url)
 
 const __dirname = path.dirname(__filename)
 
+app.use(json())
 app.use(urlencoded( { extended: true}))
 app.use('/uploads/images', express.static(resolve(__dirname, 'uploads', 'images')))
-app.use(json())
 app.use(UserRoute)
 app.use(TokenRoute)
 app.use(ServiceRoute)

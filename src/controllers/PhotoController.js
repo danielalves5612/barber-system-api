@@ -43,7 +43,7 @@ async function store(req, res) {
         return res.status(201).json({ id, originalname, filename, url, service_id })
     }catch(e){
         return res.status(400).json({
-            errors: e.errors.map(err => err.message)
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }

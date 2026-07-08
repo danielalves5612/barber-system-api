@@ -5,6 +5,7 @@ class Service extends Model{
         super.init({
             nome: {
                 type: Sequelize.STRING,
+                unique: true,
                 validate: {
                     notEmpty: {
                         msg: "O campo nome precisa ser preenchido"
@@ -13,9 +14,6 @@ class Service extends Model{
                         args: [5, 50],
                         msg: "O campo nome precisa ter entre 5 e 50 caracteres"
                     },
-                    unique: {
-                        msg: "Serviço já cadastrado"
-                    }
                 },
             },
             descricao: {
