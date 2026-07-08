@@ -8,6 +8,9 @@ const configDatabase = {
     database: process.env.DB_DATABASE,
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    dialectOptions: {
+        allowPublicKeyRetrieval: true
+    },
     define: {
         timestamps: true,
         underscored: true,
