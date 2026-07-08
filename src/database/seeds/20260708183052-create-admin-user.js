@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs"
 
 /** @type {import('sequelize-cli').Migration} */
-export default = {
+export default {
   async up (queryInterface, Sequelize) {
 
      await queryInterface.bulkInsert('users', [{
