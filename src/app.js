@@ -8,6 +8,7 @@ import PhotoRoute from "./routes/PhotoRoute.js"
 import path, { resolve } from 'path'
 import { fileURLToPath } from 'url'
 import ErrorHandler from './middlewares/ErrorHandler.js';
+import cors from "cors"
 
 
 const app = express()
@@ -16,6 +17,9 @@ const __filename = fileURLToPath(import.meta.url)
 
 const __dirname = path.dirname(__filename)
 
+app.use(cors({
+    origin: "http://localhost:5173"
+}))
 app.use(json())
 app.use(urlencoded( { extended: true}))
 app.use('/uploads/images', express.static(resolve(__dirname, 'uploads', 'images')))
