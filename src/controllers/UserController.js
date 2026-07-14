@@ -23,6 +23,12 @@ async function store (req, res) {
 
         return res.status(201).json({id, nome, email, telefone, role})
     }catch(e){
+        
+        if(e.name === "SequelizeUniqueConstraintError"){
+            return res.status(400).json({
+                errors: ["Este e-mail já está cadastrado. Informe outro e-mail"]
+            })
+        }
         return res.status(400).json({
             errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
