@@ -42,11 +42,11 @@ class User extends Model{
                 type: Sequelize.VIRTUAL,
                 validate: {
                     notEmpty: {
-                        msg: "O campo password precisa ser preenchido"
+                        msg: "O campo senha precisa ser preenchido"
                     },
                     len: {
                         args: [8, 20],
-                        msg: "O password precisa ter entre 8 e 20 caracteres"
+                        msg: "A senha precisa ter entre 8 e 20 caracteres"
                     }
                 }
             },
