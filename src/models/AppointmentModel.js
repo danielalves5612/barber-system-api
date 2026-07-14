@@ -7,7 +7,7 @@ class Appointment extends Model{
                 type: Sequelize.DATEONLY,
                 validate: {
                     notEmpty: {
-                        msg: "O campo data precisa ser preenchido"
+                        msg: "A data do agendamento é obrigatória"
                     },
                 },
             },
@@ -15,7 +15,7 @@ class Appointment extends Model{
                 type: Sequelize.TIME,
                 validate: {
                     notEmpty: {
-                        msg: "O campo hora precisa ser preenchido"
+                        msg: "O horário do agendamento é obrigatório"
                     }
                 }
             },
@@ -23,18 +23,28 @@ class Appointment extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: "O campo status precisa ser preenchido"
+                        msg: "O status do agendamento é obrigatório"
                     }
                 },
                 defaultValue: 'agendado'
             },
             cliente_id: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "O cliente do agendamento é obrigatório"
+                    }
+                }
             },
             barbeiro_id: {
                 type: Sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "O barbeiro do agendamento é obrigatório"
+                    }
+                }
             }
         },
         {

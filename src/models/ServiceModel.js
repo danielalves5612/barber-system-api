@@ -5,14 +5,16 @@ class Service extends Model{
         super.init({
             nome: {
                 type: Sequelize.STRING,
-                unique: true,
+                unique: {
+                    msg: "Já existe um serviço cadastrado com este nome"
+                },
                 validate: {
                     notEmpty: {
-                        msg: "O campo nome precisa ser preenchido"
+                        msg: "O nome do serviço é obrigatório"
                     },
                     len: {
                         args: [5, 50],
-                        msg: "O campo nome precisa ter entre 5 e 50 caracteres"
+                        msg: "O nome do serviço deve conter entre 5 e 50 caracteres"
                     },
                 },
             },
@@ -20,7 +22,7 @@ class Service extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: "O campo descrição precisa ser preenchido"
+                        msg: "A descrição do serviço é obrigatória"
                     }
                 }
             },
@@ -28,10 +30,10 @@ class Service extends Model{
                 type: Sequelize.DECIMAL,
                 validate: {
                     isDecimal: {
-                        msg: "O preço precisa ser um número decimal"
+                        msg: "O preço deve ser um número decimal válido"
                     },
                     notEmpty: {
-                        msg: "O campo preço precisa ser preenchido"
+                        msg: "O preço é obrigatório"
                     }
                 }
             },
@@ -39,11 +41,11 @@ class Service extends Model{
                 type: Sequelize.INTEGER,
                 validate: {
                     notEmpty: {
-                        msg: "O campo duração precisa ser preenchido"
+                        msg: "A duração é obrigatória"
                     },
                     min: {
                         args: 15,
-                        msg: "O tempo de duração precisa ser maior que 15 minutos"
+                        msg: "A duração deve ser de, no mínimo, 15 minutos"
                     }
                 }
             },

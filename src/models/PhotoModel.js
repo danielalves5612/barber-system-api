@@ -7,7 +7,7 @@ class Photo extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: 'O campo precisa estar preenchido'
+                        msg: 'O nome original da imagem é obrigatório'
                     }
                 }
             },
@@ -15,7 +15,7 @@ class Photo extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: 'O campo precisa estar preenchido'
+                        msg: 'O nome do arquivo da imagem é obrigatório'
                     }
                 }
             },
@@ -24,7 +24,7 @@ class Photo extends Model{
                 allowNull: false,
                 validate: {
                     notNull: {
-                        msg: 'O serviço precisa ser informado'
+                        msg: 'O serviço relacionado a imagem é obrigatório'
                     }
                 }
             },

@@ -8,25 +8,25 @@ class User extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: "Campo nome não pode estar vazio"
+                        msg: "O nome é obrigatório."
                     },
                     len: {
                         args: [5, 50],
-                        msg: "O nome precisa ter entre 5 e 50 caracteres"
+                        msg: "O nome deve conter entre 5 e 50 caracteres."
                     }
                 }
             },
             email: {
                 type: Sequelize.STRING,
                 unique: {
-                    msg: "Este e-mail já está cadastrado"
+                    msg: "Este e-mail já está cadastrado."
                 },
                 validate: {
                     isEmail: {
-                        msg: "Por favor, digite um e-mail válido"
+                        msg: "Informe um e-mail válido."
                     },
                     notEmpty: {
-                        msg: "O campo e-mail precisa ser preenchido"
+                        msg: "O e-mail é obrigatório."
                     },
                 }
             },
@@ -34,7 +34,7 @@ class User extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: "O campo telefone precisa ser preenchido"
+                        msg: "O telefone é obrigatório."
                     }
                 }
             },
@@ -42,11 +42,11 @@ class User extends Model{
                 type: Sequelize.VIRTUAL,
                 validate: {
                     notEmpty: {
-                        msg: "O campo senha precisa ser preenchido"
+                        msg: "A senha é obrigatória."
                     },
                     len: {
                         args: [8, 20],
-                        msg: "A senha precisa ter entre 8 e 20 caracteres"
+                        msg: "A senha deve conter entre 8 e 20 caracteres."
                     }
                 }
             },
@@ -55,7 +55,7 @@ class User extends Model{
                 type: Sequelize.STRING,
                 validate: {
                     notEmpty: {
-                        msg: "Por favor, informe qual o cargo do usuário"
+                        msg: "O cargo do usuário é obrigatório."
                     }
                 }
             }
