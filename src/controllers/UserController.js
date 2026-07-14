@@ -9,9 +9,17 @@ async function store (req, res) {
             return
         }
 
-        const user = await User.create(req.body)
+        const { nome, email, telefone, password } = req.body
 
-        const { id, nome, email, telefone, role } = user
+        const user = await User.create({
+            nome, 
+            email, 
+            telefone, 
+            password,
+            role: "cliente",
+        })
+
+        const { id, role } = user
 
         return res.status(201).json({id, nome, email, telefone, role})
     }catch(e){
