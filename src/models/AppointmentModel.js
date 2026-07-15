@@ -28,6 +28,15 @@ class Appointment extends Model{
                 },
                 defaultValue: 'agendado'
             },
+            service_id: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "O serviço do agendamento é obrigatório"
+                    }
+                }
+            },
             cliente_id: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
@@ -54,6 +63,24 @@ class Appointment extends Model{
         )
 
         return this
+    }
+
+    static associate(models) {
+        this.belongsTo(models.User, {
+            foreignKey: "cliente_id",
+            as: "cliente"
+
+        })
+
+        this.belongsTo(models.User, {
+            foreignKey: "barbeiro_id",
+            as: "barbeiro"
+        })
+
+        this.belongsTo(models.Service, {
+            foreignKey: "service_id",
+            as: "service"
+        })
     }
 
 }

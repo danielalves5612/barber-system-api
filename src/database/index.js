@@ -19,6 +19,7 @@ const models = {
     Photo
 }
 
+Appointment.associate(models)
 Service.associate(models)
 Photo.associate(models)
 
