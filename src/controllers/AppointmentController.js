@@ -374,6 +374,7 @@ async function update(req, res){
             barbeiro_id: appointmentBarbeiroId
         })
     }catch(e){
+        console.log("Erro Update:", e)
         return res.status(400).json({
             errors: ["Erro ao atualizar o agendamento, tente novamente"]
         })
