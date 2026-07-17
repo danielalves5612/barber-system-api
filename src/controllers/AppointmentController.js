@@ -299,7 +299,7 @@ async function update(req, res){
         }
 
         if(service_id){
-            const service = await Service.findByPk(appointmentServiceId)
+            const service = await Service.findByPk(service_id)
 
             if(!service){
                 return res.status(400).json({
