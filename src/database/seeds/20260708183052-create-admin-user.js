@@ -19,7 +19,7 @@ export default {
   async down (queryInterface, Sequelize) {
 
     await queryInterface.bulkDelete('users', null, {
-      email: 'da442494@gmail.com'
+      email: 'danieladmin@gmail.com'
     });
     
   }
