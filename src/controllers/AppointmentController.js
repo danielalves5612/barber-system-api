@@ -182,7 +182,7 @@ async function index(req, res){
                 {
                     model: Service,
                     as: "service",
-                    attributes: ["id", "nome", "duracao"]
+                    attributes: ["id", "nome", "duracao", "preco"]
                 }
             ],
             order: [
