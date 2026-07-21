@@ -26,6 +26,15 @@ class Service extends Model{
                     }
                 }
             },
+            categoria: {
+                type: Sequelize.STRING,
+                allowNull: false,
+                validate: {
+                    notEmpty: {
+                        msg: "A categoria é um campo obrigatório"
+                    }
+                }
+            },
             preco: {
                 type: Sequelize.DECIMAL,
                 validate: {

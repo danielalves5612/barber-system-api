@@ -16,9 +16,9 @@ async function store(req, res){
             })
         }
 
-        const { id, nome, descricao, preco, duracao, ativo} = service
+        const { id, nome, descricao, categoria, preco, duracao, ativo} = service
 
-        return res.status(201).json({id, nome, descricao, preco, duracao, ativo})
+        return res.status(201).json({id, nome, descricao, categoria, preco, duracao, ativo})
     }catch(e){
         return res.status(400).json({
             errors: e.errors? e.errors.map((err) => err.message) : [e.message]
@@ -28,7 +28,7 @@ async function store(req, res){
 
 async function index(req, res){
     try{
-        const service = await Service.findAll({ attributes: ["id", "nome", "descricao", "preco", "duracao", "ativo"],
+        const service = await Service.findAll({ attributes: ["id", "nome", "descricao", "categoria", "preco", "duracao", "ativo"],
             include: [{
                 association: 'photos',
                 attributes: ['id', 'filename', 'url']
@@ -38,7 +38,7 @@ async function index(req, res){
         return res.status(200).json(service)
     }catch(e){
         return res.status(400).json({
-            error: "Falha ao exibir serviços, tente novamente"
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
@@ -53,7 +53,7 @@ async function show(req, res){
             })
         }
 
-        const service = await Service.findByPk(id, {attributes: ["id", "nome", "descricao", "preco", "duracao", "ativo"],
+        const service = await Service.findByPk(id, {attributes: ["id", "nome", "descricao", "categoria", "preco", "duracao", "ativo"],
             include: [{
                 association: 'photos',
                 attributes: ['id', 'filename', 'url']
@@ -69,7 +69,7 @@ async function show(req, res){
         return res.status(200).json(service)
     }catch(e){
         return res.status(400).json({
-            error: "Verifique o ID digitado e tente novamente"
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
@@ -100,12 +100,12 @@ async function update(req, res){
 
         const serviceUpdate = await service.update(req.body)
 
-        const { id, nome, descricao, preco, duracao, ativo} = serviceUpdate
+        const { id, nome, descricao, categoria, preco, duracao, ativo} = serviceUpdate
 
-        return res.status(200).json({id, nome, descricao, preco, duracao, ativo})
+        return res.status(200).json({id, nome, descricao, categoria, preco, duracao, ativo})
     }catch(e){
         return res.status(400).json({
-            error: "Nenhum serviço encontrado ou falha na busca"
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
@@ -135,7 +135,7 @@ async function destroy(req, res){
         return res.status(200).json(`O ${nome} foi deletado com sucesso`)
     }catch(e){
         return res.status(400).json({
-            error: "Erro ao deletar o serviço, tente novamente"
+            errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
     }
 }
