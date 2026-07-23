@@ -20,6 +20,13 @@ async function store(req, res){
 
         return res.status(201).json({id, nome, descricao, categoria, preco, duracao, ativo})
     }catch(e){
+        
+        if(e.name === "SequelizeUniqueConstraintError"){
+            return res.status(400).json({
+                errors: ["Já existe um serviço cadastrado com este nome"]
+            })
+        }
+
         return res.status(400).json({
             errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
@@ -37,12 +44,6 @@ async function index(req, res){
 
         return res.status(200).json(service)
     }catch(e){
-        if(e.name === "SequelizeUniqueConstraintError"){
-            return res.status(400).json({
-                errors: ["Já existe um serviço cadastrado com este nome"]
-            })
-        }
-
         return res.status(400).json({
             errors: e.errors? e.errors.map((err) => err.message) : [e.message]
         })
