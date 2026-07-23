@@ -39,7 +39,12 @@ async function createToken(req, res){
         )
 
         return res.status(200).json({
-            token
+            token,
+            user: {
+                id: user.id,
+                nome: user.nome,
+                role: user.role
+            }
         })
     }catch(e){
         console.log(e)
